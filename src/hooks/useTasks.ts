@@ -1,0 +1,153 @@
+import { useState, useCallback, useEffect } from "react";
+import { Task } from "../types";
+
+export function useTasks() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const addTask = useCallback(
+    async (task: Omit<Task, "id" | "createdAt">) => {
+      try {
+        const response = await fetch("http://localhost:3000/tasks/addtask", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(task),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const taskData = await response.json();
+        console.log(taskData);
+        setTasks((prev) => [...prev, taskData]);
+        console.log("Task added:", taskData);
+        return taskData;
+      } catch (error) {
+        console.error("Error adding task:", error);
+      }
+    },
+    [setTasks]
+  );
+
+  const updateTask = useCallback(
+    async (id: string, updates: Partial<Task>) => {
+      try {
+        const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updates),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const taskData = await response.json();
+        console.log(taskData);
+        setTasks((prev) =>
+          prev.map((task) => (task._id === id ? { ...task, ...updates } : task))
+        );
+        console.log("Task added:", taskData);
+      } catch (error) {
+        console.error("Error adding task:", error);
+      }
+    },
+    [setTasks]
+  );
+
+  const deleteTask = useCallback(
+    async (id: string) => {
+      try {
+        const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        
+        setTasks((prev) => prev.filter((task) => task._id !== id));
+      } catch (error) {
+        console.error("Error adding task:", error);
+      }
+    },
+    [setTasks]
+  );
+
+  const toggleTask = useCallback(
+    async (id: string) => {
+      try {
+        const response = await fetch(`http://localhost:3000/tasks/complete/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        setTasks((prev) =>
+          prev.map((task) =>
+            task._id === id ? { ...task, completed: !task.completed } : task
+          )
+        );
+      } catch (error) {
+        console.error("Error adding task:", error);
+      }
+    },
+    [setTasks]
+  );
+
+  const getTasksForDate = useCallback(
+    async (date: string) => {
+      return tasks.filter((task) => task.date === date);
+    },
+    [tasks]
+  );
+
+  const fetchTasks = useCallback(async () => {
+    try {
+      const response = await fetch("http://localhost:3000/tasks", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const fetchedTasks = await response.json();
+
+      setTasks(fetchedTasks);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  }, [setTasks]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
+
+  return {
+    tasks,
+    addTask,
+    updateTask,
+    deleteTask,
+    toggleTask,
+    getTasksForDate,
+    fetchTasks,
+  };
+}
