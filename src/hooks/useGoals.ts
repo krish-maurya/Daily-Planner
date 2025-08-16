@@ -4,7 +4,7 @@ import { Goal } from '../types';
 export function useGoals() {
   const [goals, setGoals] = useState<Goal[]>([]);
 
-  const addGoal = useCallback(async(goal: Omit<Goal, 'id' | 'createdAt'>) => {
+  const addGoal = useCallback(async(goal: Omit<Goal, '_id' | 'createdAt'>) => {
      try {
         const response = await fetch("http://localhost:3000/goals/addgoal", {
           method: "POST",

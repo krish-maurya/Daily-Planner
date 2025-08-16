@@ -3,7 +3,7 @@ import { Plus, X } from 'lucide-react';
 import { Goal } from '../../types';
 
 interface GoalFormProps {
-  onAdd: (goal: Omit<Goal, 'id' | 'createdAt'>) => void;
+  onAdd: (goal: Omit<Goal, '_id' | 'createdAt'>) => void;
 }
 
 export function GoalForm({ onAdd }: GoalFormProps) {

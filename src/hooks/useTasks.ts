@@ -5,7 +5,7 @@ export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const addTask = useCallback(
-    async (task: Omit<Task, "id" | "createdAt">) => {
+    async (task: Omit<Task, "_id" | "createdAt">) => {
       try {
         const response = await fetch("http://localhost:3000/tasks/addtask", {
           method: "POST",

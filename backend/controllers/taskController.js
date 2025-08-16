@@ -47,10 +47,19 @@ exports.deleteTask = async (req, res) => {
   }
 };
 
-exports.getTaskByDate = async (req, res) => {
+exports.getTaskByMonth = async (req, res) => {
   try {
-    const { date } = req.params;
-    const tasks = await Task.find({ date: date });
+    const { month } = req.params; // e.g., "2025-08"
+
+    const [year, monthNum] = month.split('-').map(Number);
+
+    const startDate = new Date(year, monthNum - 1, 1); // first day of month
+    const endDate = new Date(year, monthNum, 0, 23, 59, 59, 999); // last day of month
+
+    const tasks = await Task.find({
+      date: { $gte: startDate, $lte: endDate }
+    });
+
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: "Error fetching tasks by date", error });

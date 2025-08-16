@@ -4,7 +4,7 @@ const {
   addTask,
   updateTask,
   deleteTask,
-  getTaskByDate,
+  getTaskByMonth,
   updateCompleteState,
 } = require("../controllers/taskController");
 
@@ -14,7 +14,7 @@ router.get("/", getallTask);
 router.post("/addtask", addTask);
 router.put("/:taskid", updateTask);
 router.delete("/:taskid", deleteTask);
-router.get("/date/:date", getTaskByDate);
+router.get("/month/:month", getTaskByMonth);
 router.put("/complete/:taskid", updateCompleteState);
 
 module.exports = router;

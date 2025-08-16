@@ -3,7 +3,7 @@ import { Plus, X } from 'lucide-react';
 import { Task } from '../../types';
 
 interface TaskFormProps {
-  onAdd: (task: Omit<Task, 'id' | 'createdAt'>) => void;
+  onAdd: (task: Omit<Task, '_id' | 'createdAt'>) => void;
   selectedDate: string;
 }
 

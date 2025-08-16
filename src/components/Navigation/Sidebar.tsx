@@ -3,8 +3,8 @@ import { Calendar, Target, List, BarChart3, User, ChevronDown, ChevronLeft, Chev
 import { Task, Goal } from '../../types';
 
 interface SidebarProps {
-  currentView: 'tasks' | 'goals' | 'dashboard' ;
-  onViewChange: (view: 'tasks' | 'goals' | 'dashboard' ) => void;
+  currentView: 'tasks' | 'goals' | 'dashboard' | 'calendar';
+  onViewChange: (view: 'tasks' | 'goals' | 'dashboard' | 'calendar') => void;
   tasks: Task[];
   goals: Goal[];
     
@@ -17,6 +17,7 @@ export function Sidebar({ currentView, onViewChange,  tasks, goals,  }: SidebarP
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
     { id: 'tasks', label: 'Tasks', icon: List },
     { id: 'goals', label: 'Goals', icon: Target },
+    { id: 'calendar', label: 'Calendar', icon: Calendar },
   ];
 
   const categories = [
