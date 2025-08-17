@@ -7,14 +7,15 @@ const {
   getTaskByMonth,
   updateCompleteState,
 } = require("../controllers/taskController");
+const { jwtAuthMiddlware } = require("../middleware/jwtAuthMiddleware");
 
 const router = express.Router();
 
-router.get("/", getallTask);
-router.post("/addtask", addTask);
-router.put("/:taskid", updateTask);
-router.delete("/:taskid", deleteTask);
-router.get("/month/:month", getTaskByMonth);
-router.put("/complete/:taskid", updateCompleteState);
+router.get("/", jwtAuthMiddlware, getallTask);
+router.post("/addtask", jwtAuthMiddlware, addTask);
+router.put("/:taskid", jwtAuthMiddlware, updateTask);
+router.delete("/:taskid", jwtAuthMiddlware, deleteTask);
+router.get("/month/:month", jwtAuthMiddlware, getTaskByMonth);
+router.put("/complete/:taskid", jwtAuthMiddlware, updateCompleteState);
 
 module.exports = router;

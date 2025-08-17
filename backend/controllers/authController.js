@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
-const { generateToken } = require("../jwt");
+const { generateToken } = require("../middleware/jwtAuthMiddleware");
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = '123456789';
 

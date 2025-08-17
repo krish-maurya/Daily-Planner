@@ -2,7 +2,7 @@ const Task = require("../models/Task");
 
 exports.getallTask = async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find({userId: req.user.id});
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: "Error fetching tasks", error });
@@ -11,7 +11,7 @@ exports.getallTask = async (req, res) => {
 
 exports.addTask = async (req, res) => {
   try {
-    const newTask = new Task(req.body);
+    const newTask = new Task({ ...req.body, userId: req.user.id });
     await newTask.save();
     res.status(201).json(newTask);
   } catch (error) {
@@ -22,7 +22,7 @@ exports.addTask = async (req, res) => {
 exports.updateTask = async (req, res) => {
   try {
     const { taskid } = req.params;
-    const updatedTask = await Task.findByIdAndUpdate(taskid, req.body, {
+    const updatedTask = await Task.findOneAndUpdate({ _id: taskid, userId: req.user.id }, req.body, {
       new: true,
     });
     if (!updatedTask) {
@@ -37,7 +37,7 @@ exports.updateTask = async (req, res) => {
 exports.deleteTask = async (req, res) => {
   try {
     const { taskid } = req.params;
-    const deletedTask = await Task.findByIdAndDelete(taskid);
+    const deletedTask = await Task.findOneAndDelete({ _id: taskid, userId: req.user.id });
     if (!deletedTask) {
       return res.status(404).json({ message: "Task not found" });
     }
@@ -57,6 +57,7 @@ exports.getTaskByMonth = async (req, res) => {
     const endDate = new Date(year, monthNum, 0, 23, 59, 59, 999); // last day of month
 
     const tasks = await Task.find({
+      userId: req.user.id,
       date: { $gte: startDate, $lte: endDate }
     });
 
@@ -73,8 +74,8 @@ exports.updateCompleteState = async (req, res) => {
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
-    const updatedTask = await Task.findByIdAndUpdate(
-      taskid,
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: taskid, userId: req.user.id },
       { completed: !task.completed },
       { new: true }
     );

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Goal } from '../types';
+import cookie from 'js-cookie';
 
 export function useGoals() {
   const [goals, setGoals] = useState<Goal[]>([]);
@@ -10,6 +11,7 @@ export function useGoals() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${cookie.get("token")}`
           },
           body: JSON.stringify(goal),
         });
@@ -31,6 +33,7 @@ export function useGoals() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${cookie.get("token")}`
           },
           body: JSON.stringify(updates),
         });
@@ -57,6 +60,7 @@ export function useGoals() {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${cookie.get("token")}`
           },
         });
 
@@ -77,6 +81,7 @@ export function useGoals() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${cookie.get("token")}`
           },
           body: JSON.stringify({"currentValue": value}),
         });
@@ -103,6 +108,7 @@ export function useGoals() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${cookie.get("token")}`
           },
         });
   

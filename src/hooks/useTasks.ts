@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Task } from "../types";
+import cookie from "js-cookie";
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -11,6 +12,7 @@ export function useTasks() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${cookie.get("token")}`
           },
           body: JSON.stringify(task),
         });
@@ -38,6 +40,7 @@ export function useTasks() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${cookie.get("token")}`
           },
           body: JSON.stringify(updates),
         });
@@ -66,6 +69,7 @@ export function useTasks() {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${cookie.get("token")}`
           },
         });
 
@@ -90,6 +94,7 @@ export function useTasks() {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${cookie.get("token")}`
             },
           }
         );
@@ -122,6 +127,7 @@ export function useTasks() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${cookie.get("token")}`
         },
       });
 
