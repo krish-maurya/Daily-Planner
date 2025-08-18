@@ -1,4 +1,3 @@
-const { UserRoundIcon } = require("lucide-react");
 const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema({
