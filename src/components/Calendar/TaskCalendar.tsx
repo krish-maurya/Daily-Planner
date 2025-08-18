@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Plus, X, ChevronDown, StickyNote } from 'lucide-react';
 import { Task } from '../../types';
+import Cookies from 'js-cookie';
 
 interface CalendarProps {
   onAdd: (task: Omit<Task, '_id' | 'createdAt'>) => void;
@@ -9,7 +10,7 @@ interface CalendarProps {
 
 
 const TaskCalendar = ({ onAdd, onDelete }: CalendarProps) => {
-  const host = import.meta.env.HOST;
+  const host = "http://localhost:3000";
   const [tasks, setTasks] = useState<Task[]>([]);
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<Task['priority']>('medium');
@@ -87,6 +88,7 @@ useEffect(() => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${Cookies.get("token")}`
         },
       });
 

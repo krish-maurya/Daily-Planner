@@ -3,7 +3,7 @@ import { Task } from "../types";
 import cookie from "js-cookie";
 
 export function useTasks() {
-  const host = import.meta.env.HOST;
+  const host = "http://localhost:3000";
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const addTask = useCallback(

@@ -32,7 +32,7 @@ export function Sidebar({ currentView, onViewChange, tasks, goals, }: SidebarPro
 
 
 const user = Cookies.get("token")
-  ? (JSON.parse(Cookies.get("token") as string) as { id: string; email: string; name: string })
+  ? (jwtDecode(Cookies.get("token") as string) as { id: string; email: string; name: string })
   : { id: null, email: null, name: null };
 
   const handleOption = () => {

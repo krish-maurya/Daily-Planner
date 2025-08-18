@@ -24,7 +24,7 @@ interface SignUpProps {
 
 export default function LoginPage() {
   const { login } = useAuth();
-  const host = import.meta.env.HOST;
+  const host = "http://localhost:3000/";
   const navigate = useNavigate();
   const location = useLocation();
 

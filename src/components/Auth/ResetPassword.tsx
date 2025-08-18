@@ -13,7 +13,7 @@ interface Errors {
 }
 
 export default function ResetPassword() {
-  const host = import.meta.env.HOST;
+  const host = "http://localhost:3000/";
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");

@@ -3,7 +3,7 @@ import { Goal } from '../types';
 import cookie from 'js-cookie';
 
 export function useGoals() {
-  const host = import.meta.env.HOST;
+  const host = "http://localhost:3000";
   const [goals, setGoals] = useState<Goal[]>([]);
 
   const addGoal = useCallback(async(goal: Omit<Goal, '_id' | 'createdAt'>) => {
