@@ -22,7 +22,7 @@ interface Errors {
 }
 
 export default function SignUP({ setIsLogin }: SignUpProps) {
-  const host = "http://localhost:3000/";
+  const host = import.meta.env.HOST;
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",

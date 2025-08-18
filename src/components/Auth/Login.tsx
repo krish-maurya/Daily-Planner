@@ -1,9 +1,11 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import SignUP from "./SignUP";
 import { useAuth } from "../../AuthContext";
 import Cookie from "js-cookie";
+import { Toast } from "./Toast";
+
 
 interface FormData {
   email: string;
@@ -22,8 +24,10 @@ interface SignUpProps {
 
 export default function LoginPage() {
   const { login } = useAuth();
-  const host = "http://localhost:3000/";
+  const host = import.meta.env.HOST;
   const navigate = useNavigate();
+  const location = useLocation();
+
 
   const [formData, setFormData] = useState<FormData>({
     email: "",
@@ -33,7 +37,10 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<Errors>({});
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useState<boolean>(location.state?.isLogin ?? true);
+  const [showToast, setShowToast] = useState(false);
+
+
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -99,8 +106,8 @@ export default function LoginPage() {
       const data = await response.json();
       if (response.ok) {
         Cookie.set("token", data.token, { secure: true, sameSite: "Strict" });
-        login(data.token); 
-        navigate("/app");  
+        login(data.token);
+        navigate("/app");
       } else {
         setErrors({ general: data.message || "Login failed" });
       }
@@ -131,7 +138,7 @@ export default function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        alert("Email is sent");
+        setShowToast(true);
       } else {
         setErrors({ general: data.message || "Failed to send reset email" });
       }
@@ -253,6 +260,7 @@ export default function LoginPage() {
                         Create one now
                       </button>
                     </p>
+                    {showToast && (<Toast message="Email is sent" duration={3000}  />)}
                   </div>
                 </div>
               </div>

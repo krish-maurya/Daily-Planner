@@ -1,5 +1,7 @@
+const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const dbURI = 'mongodb://localhost:27017/DailyPlanner';
+dotenv.config();
+const dbURI = process.env.MONGO_URI;
 
 mongoose.connect(dbURI)
 

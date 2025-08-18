@@ -9,6 +9,7 @@ interface CalendarProps {
 
 
 const TaskCalendar = ({ onAdd, onDelete }: CalendarProps) => {
+  const host = import.meta.env.HOST;
   const [tasks, setTasks] = useState<Task[]>([]);
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<Task['priority']>('medium');
@@ -82,7 +83,7 @@ const TaskCalendar = ({ onAdd, onDelete }: CalendarProps) => {
 useEffect(() => {
   const fetchMonthTasks = async () => {
     try {
-        const response = await fetch(`http://localhost:3000/tasks/month/${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`, {
+        const response = await fetch(`${host}/tasks/month/${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

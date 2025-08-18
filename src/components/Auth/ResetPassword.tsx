@@ -2,7 +2,7 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Lock, Eye, EyeOff } from "lucide-react";
-
+import Toast from "./Toast";
 
 interface FormData {
   password: string;
@@ -13,6 +13,7 @@ interface Errors {
 }
 
 export default function ResetPassword() {
+  const host = import.meta.env.HOST;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
@@ -24,6 +25,8 @@ export default function ResetPassword() {
   const [errors, setErrors] = useState<Errors>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
 
   const validateForm = (): boolean => {
     const newErrors: Errors = {};
@@ -52,13 +55,14 @@ export default function ResetPassword() {
     if (!validateForm()) return;
 
     if (!token) {
-      alert("Invalid or missing reset token");
+      setToastMessage("Invalid or missing reset token");
+      setShowToast(true);
       return;
     }
 
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/auth/reset-password", {
+      const res = await fetch(`${host}/auth/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -70,14 +74,16 @@ export default function ResetPassword() {
       const data = await res.json();
 
       if (res.ok) {
-        alert(data.message || "Password reset successfully!");
-        navigate("/");
+        setToastMessage(data.message || "Password reset successfully!");
+        setShowToast(true);
       } else {
-        alert(data.message || "Failed to reset password");
+        setToastMessage(data.message || "Failed to reset password");
+        setShowToast(true);
       }
     } catch (error) {
       console.error("Reset password error:", error);
-      alert("An error occurred while resetting password. Please try again.");
+      setToastMessage("An error occurred while resetting password. Please try again.");
+      setShowToast(true);
     } finally {
       setIsLoading(false);
     }
@@ -138,6 +144,9 @@ export default function ResetPassword() {
                 {isLoading ? "Changing Password..." : "Change Password"}
               </button>
             </form>
+            {showToast && (
+              <Toast message={toastMessage} duration={3000}  />
+            )}
           </div>
         </div>
       </div>

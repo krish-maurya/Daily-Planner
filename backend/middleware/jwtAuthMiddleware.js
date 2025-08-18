@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const { model } = require("mongoose");
-const JWT_SECRET = '123456789';
+const dotenv = require("dotenv");
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const jwtAuthMiddlware = (req, res, next) => {
   const authorization = req.headers.authorization;
@@ -22,7 +24,7 @@ const jwtAuthMiddlware = (req, res, next) => {
 };
 
 const generateToken = (userData)=>{
-    const token = jwt.sign(userData, JWT_SECRET,{expiresIn:1000000});
+    const token = jwt.sign(userData, JWT_SECRET,{expiresIn: '1h'});
     return token
 }
 

@@ -3,15 +3,17 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const { generateToken } = require("../middleware/jwtAuthMiddleware");
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = '123456789';
+const dotenv = require('dotenv');
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 
 //email transport setup
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "mauryakrish794@gmail.com",
-    pass: "txsybtebdmnizthv",
+    user: process.env.USER,
+    pass: process.env.PASS,
   },
 });
 
@@ -38,7 +40,7 @@ exports.registerUser = async (req, res) => {
     await user.save();
     // Send OTP via email
     await transporter.sendMail({
-      from: "mauryakrish794@gmail.com",
+      from: process.env.USER,
       to: email,
       subject: "OTP Verification",
       text: `Your OTP is ${otp}. It is valid for 10 minutes.`,
@@ -76,6 +78,7 @@ exports.verifyOTP = async (req, res) => {
     const payload = {
       id: user.id,
       email: user.email,
+      name: user.name,
     };
     const token = generateToken(payload);
     res.status(200).json({ message: "User verified successfully", token });
@@ -100,7 +103,7 @@ exports.resendOTP = async (req, res) => {
     await user.save();
 
     await transporter.sendMail({
-      from: "mauryakrish794@gmail.com",
+      from: process.env.USER,
       to: email,
       subject: "Resend OTP Verification",
       text: `Your OTP is ${otp}. It is valid for 10 minutes.`,
@@ -129,6 +132,7 @@ exports.loginUser = async (req, res) => {
      const payload = {
       id: user.id,
       email: user.email,
+      name: user.name,
     };
     const token = generateToken(payload);
 
@@ -161,7 +165,7 @@ exports.sendResetLink = async (req, res) => {
     const resetLink = `http://localhost:5173/reset-password?token=${resetToken}`;
 
     await transporter.sendMail({
-      from: "mauryakrish794@gmail.com",
+      from: process.env.USER,
       to: email,
       subject: "Password Reset",
       text: `Click the link to reset your password: ${resetLink}`,

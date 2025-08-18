@@ -3,12 +3,13 @@ import { Task } from "../types";
 import cookie from "js-cookie";
 
 export function useTasks() {
+  const host = import.meta.env.HOST;
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const addTask = useCallback(
     async (task: Omit<Task, "_id" | "createdAt">) => {
       try {
-        const response = await fetch("http://localhost:3000/tasks/addtask", {
+        const response = await fetch(`${host}/tasks/addtask`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -36,7 +37,7 @@ export function useTasks() {
   const updateTask = useCallback(
     async (id: string, updates: Partial<Task>) => {
       try {
-        const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+        const response = await fetch(`${host}/tasks/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -65,7 +66,7 @@ export function useTasks() {
   const deleteTask = useCallback(
     async (id: string) => {
       try {
-        const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+        const response = await fetch(`${host}/tasks/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -89,7 +90,7 @@ export function useTasks() {
   const toggleTask = useCallback(
     async (id: string) => {
       try {
-        const response = await fetch(`http://localhost:3000/tasks/complete/${id}`,
+        const response = await fetch(`${host}/tasks/complete/${id}`,
           {
             method: "PUT",
             headers: {
@@ -123,7 +124,7 @@ export function useTasks() {
 
   const fetchTasks = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:3000/tasks", {
+      const response = await fetch(`${host}/tasks`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

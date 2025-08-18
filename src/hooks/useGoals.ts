@@ -3,11 +3,12 @@ import { Goal } from '../types';
 import cookie from 'js-cookie';
 
 export function useGoals() {
+  const host = import.meta.env.HOST;
   const [goals, setGoals] = useState<Goal[]>([]);
 
   const addGoal = useCallback(async(goal: Omit<Goal, '_id' | 'createdAt'>) => {
      try {
-        const response = await fetch("http://localhost:3000/goals/addgoal", {
+        const response = await fetch(`${host}/goals/addgoal`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -29,7 +30,7 @@ export function useGoals() {
 
   const updateGoal = useCallback(async(id: string, updates: Partial<Goal>) => {
     try {
-        const response = await fetch(`http://localhost:3000/goals/${id}`, {
+        const response = await fetch(`${host}/goals/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -56,7 +57,7 @@ export function useGoals() {
 
   const deleteGoal = useCallback(async(id: string) => {
      try {
-        const response = await fetch(`http://localhost:3000/goals/${id}`, {
+        const response = await fetch(`${host}/goals/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -77,7 +78,7 @@ export function useGoals() {
 
   const updateGoalProgress = useCallback(async(id: string, value: number) => {
      try {
-        const response = await fetch(`http://localhost:3000/goals/progress/${id}`, {
+        const response = await fetch(`${host}/goals/progress/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -104,7 +105,7 @@ export function useGoals() {
 
   const fetchGoals = useCallback(async () => {
       try {
-        const response = await fetch("http://localhost:3000/goals", {
+        const response = await fetch(`${host}/goals`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
