@@ -162,7 +162,7 @@ exports.sendResetLink = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const resetToken = generateToken({ id: user.id, email: user.email });
-    const resetLink = `http://localhost:5173/reset-password?token=${resetToken}`;
+    const resetLink = `https://daily-planner-frontend.onrender.com/reset-password?token=${resetToken}`;
 
     await transporter.sendMail({
       from: process.env.USER,
