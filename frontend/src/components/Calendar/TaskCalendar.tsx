@@ -10,7 +10,7 @@ interface CalendarProps {
 
 
 const TaskCalendar = ({ onAdd, onDelete }: CalendarProps) => {
-  const host = "http://localhost:3000";
+  const host = "https://daily-planner-2.onrender.com";
   const [tasks, setTasks] = useState<Task[]>([]);
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<Task['priority']>('medium');

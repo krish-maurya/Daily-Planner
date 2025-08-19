@@ -22,7 +22,7 @@ interface Errors {
 }
 
 export default function SignUP({ setIsLogin }: SignUpProps) {
-  const host = "http://localhost:3000/";
+  const host = "https://daily-planner-2.onrender.com/";
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",

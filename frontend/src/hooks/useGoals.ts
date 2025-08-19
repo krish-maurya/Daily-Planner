@@ -3,7 +3,7 @@ import { Goal } from '../types';
 import cookie from 'js-cookie';
 
 export function useGoals() {
-  const host = "http://localhost:3000";
+  const host = "https://daily-planner-2.onrender.com";
   const [goals, setGoals] = useState<Goal[]>([]);
 
   const addGoal = useCallback(async(goal: Omit<Goal, '_id' | 'createdAt'>) => {

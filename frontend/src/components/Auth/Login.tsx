@@ -24,7 +24,7 @@ interface SignUpProps {
 
 export default function LoginPage() {
   const { login } = useAuth();
-  const host = "http://localhost:3000/";
+  const host = "https://daily-planner-2.onrender.com/";
   const navigate = useNavigate();
   const location = useLocation();
 

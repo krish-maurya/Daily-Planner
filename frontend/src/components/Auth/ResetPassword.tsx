@@ -13,7 +13,7 @@ interface Errors {
 }
 
 export default function ResetPassword() {
-  const host = "http://localhost:3000/";
+  const host = "https://daily-planner-2.onrender.com";
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
@@ -76,6 +76,9 @@ export default function ResetPassword() {
       if (res.ok) {
         setToastMessage(data.message || "Password reset successfully!");
         setShowToast(true);
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000); // Redirect after 3 seconds
       } else {
         setToastMessage(data.message || "Failed to reset password");
         setShowToast(true);

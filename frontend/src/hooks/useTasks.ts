@@ -3,7 +3,7 @@ import { Task } from "../types";
 import cookie from "js-cookie";
 
 export function useTasks() {
-  const host = "http://localhost:3000";
+  const host = "https://daily-planner-2.onrender.com";
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const addTask = useCallback(
